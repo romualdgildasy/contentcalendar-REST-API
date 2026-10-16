@@ -2,17 +2,16 @@ package apprentissage.contentcalendar.REST.API.controller;
 
 import apprentissage.contentcalendar.REST.API.model.Content;
 import apprentissage.contentcalendar.REST.API.repository.ContentCollectionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/content")
+@CrossOrigin
 public class ContentController {
     private final ContentCollectionRepository repository;
 
@@ -31,9 +30,27 @@ public class ContentController {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found"));
     }
 
-    @PostMapping("/api/content")
-    public  void create (@RequestBody Content content){
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("")
+    public  void create (@Valid @RequestBody Content content){
         repository.save(content);
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{id}")
+    public void update(@RequestBody Content content, @PathVariable Integer id ){
+        if(!repository.existedById(id)){
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found");
+        }
+        repository.save(content);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public  void delete(@PathVariable Integer id){
+        repository.delete(id);
+    }
+
+
 
 }
