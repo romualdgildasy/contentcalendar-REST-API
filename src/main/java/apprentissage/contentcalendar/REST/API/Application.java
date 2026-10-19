@@ -9,12 +9,8 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class Application {
-
-	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(Application.class,args);
-		RestTemplate restTemplate = (RestTemplate) context.getBean("restTemplate");
-		System.out.println(restTemplate);
-
-	 }
+	public static void main(String[] args){
+		SpringApplication.run(Application.class, args);
+	}
 
 }
